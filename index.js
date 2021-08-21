@@ -1,3 +1,7 @@
+const express = require('express')
+const app = express()
+const morgan = require('morgan')
+
 let tenMovies = [{
     title: 'Kung Fu Panda 2',
     releaseDate: 2003,
@@ -39,3 +43,26 @@ let tenMovies = [{
     releaseDate: 1998,
     director: 'Tony Bancroft/Barry Cook'
 }]
+
+app.get('/movies', (req, res) => {
+    res.send(tenMovies)
+})
+
+app.get('/', (req, res) => {
+    res.send('Welcome to my movie directory')
+})
+
+app.use(express.static('public'))
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    console.log(err.stack)
+    res.status(500).send('Something broke!');
+  });
+
+app.use(morgan(common))
+
+// Listens for request
+app.listen(8080, () => {
+    console.log('Your app is listening on port 8080.');
+  });
