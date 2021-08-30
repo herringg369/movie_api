@@ -3,11 +3,99 @@
 
 <head>
 <title></title>
+<style type="text/css">
+    table, th, td {border: 2px solid #000;}
+</style>
 </head>
 
 <body>
 <h1>Documentation Page</h1>
-<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+
+<table>
+    <thead><tr><th>Purpose</th><th>Method</th><th>URL</th><th>Request Format</th><th>Response Format</th></tr></thead>
+    <tbody>
+    <tr>
+        <td>Return a list of ALL movies to the user</td>
+        <td>GET</td>
+        <td>/movies</td>
+        <td>-</td>
+        <td>A json object with all of the data regarding the movies
+
+            {title: '',
+            releaseDate: ,
+            director: '',
+            genre: ''
+        }
+        </td>
+    </tr>
+        <td>Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user</td>
+        <td>GET</td>
+        <td>/movies/:title</td>
+        <td>The title of the movie should be entered after /movies/</td>
+        <td>A single movie
+            {title: 'Kung Fu Panda 2',
+            releaseDate: 2003,
+            director: 'Jennefir Yuh Nelsion',
+            genre: 'family'
+        }
+        </td>
+    <tr>
+        <td>Return data about a genre (description) by name/title</td>
+        <td>GET</td>
+        <td>/:genre</td>
+        <td></td>
+        <td></td>
+    </tr>
+
+    <tr>
+        <td>Return data about a director (bio, birth year, death year) by name</td>
+        <td>GET</td>
+        <td>/:director</td>
+        <td></td>
+        <td></td>
+    </tr>
+
+    <tr>
+        <td>Allow new users to register</td>
+        <td>POST</td>
+        <td>/users</td>
+        <td></td>
+        <td></td>
+    </tr>
+
+    <tr>
+        <td>Allow users to update their user info (username)</td>
+        <td>PUT</td>
+        <td>/users/:user</td>
+        <td></td>
+        <td></td>
+    </tr>
+
+    <tr>
+        <td>Allow users to add a movie to their list of favorites</td>
+        <td>POST</td>
+        <td>/movies/favorites</td>
+        <td></td>
+        <td></td>
+    </tr>
+
+    <tr>
+        <td>Allow users to remove a movie from their list of favorites</td>
+        <td>DELETE</td>
+        <td>/movies/favorites/:title</td>
+        <td></td>
+        <td></td>
+    </tr>
+
+    <tr>
+        <td>Allow existing users to deregister</td>
+        <td>DELETE</td>
+        <td>/users/:user</td>
+        <td></td>
+        <td></td>
+    </tr>
+</tbody>
+</table>
 </body>
 
 </html>
