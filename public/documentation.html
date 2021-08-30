@@ -20,7 +20,6 @@
         <td>/movies</td>
         <td>-</td>
         <td>A json object with all of the data regarding the movies
-
             {title: '',
             releaseDate: ,
             director: '',
@@ -43,56 +42,67 @@
         <td>Return data about a genre (description) by name/title</td>
         <td>GET</td>
         <td>/:genre</td>
-        <td></td>
-        <td></td>
+        <td>The genre name should be entered after the /</td>
+        <td>A json object containing all movies in the database under the specified genre</td>
     </tr>
 
     <tr>
         <td>Return data about a director (bio, birth year, death year) by name</td>
         <td>GET</td>
         <td>/:director</td>
-        <td></td>
-        <td></td>
+        <td>The director's first and last name should be typed together with no spaces</td>
+        <td>A json object containing data about the director</td>
     </tr>
 
     <tr>
         <td>Allow new users to register</td>
         <td>POST</td>
         <td>/users</td>
-        <td></td>
-        <td></td>
+        <td>An object containing data about the user
+            {username: '',
+            e-mail: '',
+            Birthday: ''
+        }
+        </td>
+        <td>A message saying whether or not the user was succesfully created</td>
     </tr>
 
     <tr>
         <td>Allow users to update their user info (username)</td>
         <td>PUT</td>
         <td>/users/:user</td>
-        <td></td>
-        <td></td>
+        <td>Type the username after /users/</td>
+        <td>A message as to whether or not their username was updated</td>
     </tr>
 
     <tr>
         <td>Allow users to add a movie to their list of favorites</td>
         <td>POST</td>
         <td>/movies/favorites</td>
-        <td></td>
-        <td></td>
+        <td>An object with information about their favorite movie
+            {title: '',
+            releaseDate: ,
+            director: '',
+            genre: ''
+        }
+        </td>
+        <td>A message as to whether or not the movie was added to the user's favoites list</td>
     </tr>
 
     <tr>
         <td>Allow users to remove a movie from their list of favorites</td>
         <td>DELETE</td>
         <td>/movies/favorites/:title</td>
-        <td></td>
-        <td></td>
+        <td>The title of the movie should be typed after /movies/favorites/</td>
+        <td>A message as to whether or not the movie was deleted from their favorites</td>
     </tr>
 
     <tr>
         <td>Allow existing users to deregister</td>
         <td>DELETE</td>
         <td>/users/:user</td>
-        <td></td>
-        <td></td>
+        <td>The username should be typed after /users/</td>
+        <td>A message stating whether or not their email was removed from the database</td>
     </tr>
 </tbody>
 </table>
