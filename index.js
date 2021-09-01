@@ -55,6 +55,10 @@ let tenMovies = [{
     genre: 'family'
 }]
 
+let directors = [{
+
+},]
+
 app.get('/movies', (req, res) => {
     res.status(200).send(tenMovies)
 })
@@ -131,7 +135,7 @@ app.delete('/users/:user', (req, res) => {
   
     if (movie) {
       tenMovies = tenMovies.filter((obj) => { return obj.id !== req.params.id });
-      res.status(201).send('The email for (req.param for the username) was removedsss.');
+      res.status(201).send('The email for (req.param for the username) was removed.');
     }
   });
 
@@ -144,6 +148,8 @@ app.use((err, req, res, next) => {
   });
 
 app.use(morgan())
+
+require('log-timestamp')(function() { return 'date="' + new Date().toISOString() + '" message="%s"' });
 
 // Listens for request
 app.listen(8080, () => {
