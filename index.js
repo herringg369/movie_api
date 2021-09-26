@@ -3,8 +3,8 @@ const app = express()
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const fs = require('fs')
-const mongoose = requrire('mongoose')
-const Models = require('./models.js')
+const mongoose = require('mongoose')
+const Models = require('./model.js')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -14,7 +14,7 @@ const Users = Models.User
 
 mongoose.connect('mongodb://localhost:27017/myFlixDB', {userNewUrlParser: true, useUnifiedTopology: true})
 
-fs.writeFileSync('log.txt', )
+
 
 let tenMovies = [{
     title: 'Kung Fu Panda 2',
@@ -217,7 +217,7 @@ let users = [{
 ]
 
 app.get('/movies', (req, res) => {
-  Movies.find.then((movies) => {
+  Movies.find().then((movies) => {
     res.status(201).json(movies)
   }).catch((err) => {
     console.error(err)
