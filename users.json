@@ -1,0 +1,4 @@
+{"_id":1.0,"username":"kylerules","email":"kylerules@gmail.com","password":"kylepassword","Birthday":{"$date":"1999-01-20T00:00:00Z"},"FavoriteMovies":{"title":"The Social Network"}}
+{"_id":2.0,"username":"jamesdaman","email":"jamesdaman@gmail.com","password":"jamespassword","Birthday":{"$date":"2001-10-01T00:00:00Z"},"FavoriteMovies":[{"$oid":"6143f5b72aa801cfc923d434"}]}
+{"_id":3.0,"username":"christinab","email":"christinab@gmail.com","password":"christinapassword","Birthday":{"$date":"2000-02-19T00:00:00Z"},"FavoriteMovies":[{"$oid":"6143f5b72aa801cfc923d434"}]}
+{"_id":5.0,"username":"jlulke","email":"jlulke@gmail.com","password":"jakepassword","Birthday":{"$date":"1997-12-04T00:00:00Z"},"FavoriteMovies":[{"$oid":"6143f5b72aa801cfc923d434"}]}
