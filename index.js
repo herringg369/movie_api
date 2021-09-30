@@ -6,12 +6,18 @@ const mongoose = require('mongoose')
 const Models = require('./model.js')
 
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: true }));
+
+let auth = require('./auth')(app);
+const passport = require('passport');
+require('./passport');
 
 const Movies = Models.Movie
 const Users = Models.User
+const Directors = Models.Director
+const Genres = Models.Genre
 
-mongoose.connect('mongodb://localhost:27017/myFlixDB', {userNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect('mongodb://localhost:27017/myFlixDB', {useNewUrlParser: true, useUnifiedTopology: true})
 
 let tenMovies = [{
     title: 'Kung Fu Panda 2',
@@ -213,7 +219,7 @@ let users = [{
 }
 ]
 
-app.get('/movies', (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.find().then((movies) => {
     res.status(201).json(movies)
   }).catch((err) => {
@@ -231,18 +237,18 @@ app.get('/movies/:title', (req, res) => {
     })
   });
 
-app.get('/movies/:genre', (req, res) => {
-    Movies.find({'movie.Genre': req.params.genre}).then((movies) => {
-      res.json(movies)
+app.get('/genres/:Name', (req, res) => {
+    Genres.findOne({"genre.Name": req.params.Name}).then((genres) => {
+      res.json(genres)
     }).catch((err) => {
       console.error(err)
       res.status(505).send('Error: ' + err)
     })
   });
 
-app.get('/movies/:director', (req, res) => {
-    Movies.find({'movie.Director': req.params.director}).then((movies) => {
-      res.json(movies)
+app.get('/directors/:Name', (req, res) => {
+    Directors.findOne({"director.Name": req.params.Name}).then((directors) => {
+      res.json(directors)
     }).catch((err) => {
       console.error(err)
       res.status(505).send('Error: ' + err)
@@ -380,7 +386,7 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke!');
   });
 
-app.use(morgan())
+app.use(morgan('common'))
 
 require('log-timestamp')(function() { return 'date="' + new Date().toISOString() + '" message="%s"' });
 
