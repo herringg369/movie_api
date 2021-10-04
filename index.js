@@ -32,7 +32,8 @@ const Users = Models.User
 const Directors = Models.Director
 const Genres = Models.Genre
 
-mongoose.connect('mongodb://localhost:27017/myFlixDB', {useNewUrlParser: true, useUnifiedTopology: true})
+// mongoose.connect('mongodb://localhost:27017/myFlixDB', {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true }); // The URL is stored online on the Heroku website for security reasons
 
 app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.find().then((movies) => {
@@ -250,3 +251,8 @@ app.listen(port, '0.0.0.0',() => {
 });
 
  // const logs = fs.writeFileSync('log.txt', '')
+
+ /*
+ mongoimport --uri mongodb+srv://thisistheperfectplan:c0wman88@myflixandfirstdb.8zljr.mongodb.net/myFlixDB --collection movies --type json --file ./movies.json
+ mongo "mongodb+srv://myflixandfirstdb.8zljr.mongodb.net/myFirstDatabase" --username thisistheperfectplan
+ */
