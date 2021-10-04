@@ -4,6 +4,21 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const Models = require('./model.js')
+const cors = require('cors')
+const { check, validationResult } = require('express-validator')
+
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin is not found on the allowedOrigins list
+      let message = 'The CORS policy for this application does not allow access from origin ' + origin;
+      return callback(new Error(message ), false);
+    }
+    return callback(null, true);
+  }
+}))
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -18,206 +33,6 @@ const Directors = Models.Director
 const Genres = Models.Genre
 
 mongoose.connect('mongodb://localhost:27017/myFlixDB', {useNewUrlParser: true, useUnifiedTopology: true})
-
-let tenMovies = [{
-    title: 'Kung Fu Panda 2',
-    releaseDate: "2003",
-    Director: {
-      Name: "Jennefir Yuh Nelsion",
-      Bio: "Korean-American storyboard writer and director",
-      Birth: "1972",
-      Death: "null"
-  },
-    Genre: {
-      Name: "Animation",
-      Description: "Films that are animated in 2d, 3d and other forms of creative style, along with various themes and settings"
-    },
-    Featured: false,
-    ImagePath: "https://upload.wikimedia.org/wikipedia/en/b/b1/Kung_Fu_Panda_2_Poster.jpg"
-}, {
-    title: 'Scott Pilgrim Vs. The World',
-    releaseDate: "2010",
-    Director: {
-      Name: "Edgar Wright",
-      Bio: "English film director known for fast paced/satircal movies",
-      Birth: "1974",
-      Death: "null"
-  },
-    Genre: {
-      Name: "Comedy",
-      Description: "Films that focus on making the audience laugh through jokes and their ridiculous premises"
-    },
-    Featured: true,
-    ImagePath: "https://upload.wikimedia.org/wikipedia/en/1/14/Scott_Pilgrim_vs._the_World_teaser.jpg"
-}, {
-    title: 'The Social Network',
-    releaseDate: "2010",
-    Director: {
-      Name: "David Fincher",
-      Bio: "American film director known for psychological thrillers/personal dramas",
-      Birth: "1962",
-      Death: "null"
-  },
-    Genre: {
-      Name: "Drama",
-      Description: "Films that focus on societal pressure, relationships, and daring stakes that affect characters personal lives"
-    },
-    Featured: false,
-    ImagePath: "https://upload.wikimedia.org/wikipedia/en/8/8c/The_Social_Network_film_poster.png"
-}, {
-    title: 'A Silent Voice',
-    releaseDate: "2016",
-    Director: {
-      Name: "Naoko Yamada",
-      Bio: "Japanese animator at Kyoto Animation",
-      Birth: "1984",
-      Death: "null"
-  },
-    Genre: {
-      Name: "Animation",
-      Description: "Films that are animated in 2d, 3d and other forms of creative style, along with various themes and settings"
-    },
-    Featured: true,
-    ImagePath: "https://upload.wikimedia.org/wikipedia/en/3/32/A_Silent_Voice_Film_Poster.jpg"
-}, {
-    title: 'Avengers Infinity War',
-    releaseDate: "2018",
-    Director: {
-      Name: "Joe Russo",
-      Bio: "1/2 of the famous Russo brothers known for their blockbuster films",
-      Birth: "1971",
-      Death: "null"
-  },
-    Genre: {
-      Name: "Action",
-      Description: "Films that focus on intense fights and close stakes to build up the audiences adrenaline"
-    },
-    Featured: true,
-    ImagePath: "https://upload.wikimedia.org/wikipedia/en/4/4d/Avengers_Infinity_War_poster.jpg"
-}, {
-    title: 'Captain America Civil War',
-    releaseDate: "2016",
-    Director: {
-      Name: "Joe Russo",
-      Bio: "1/2 of the famous Russo brothers known for their blockbuster films",
-      Birth: "1971",
-      Death: "null"
-  },
-    Genre: {
-      Name: "Action",
-      Description: "Films that focus on intense fights and close stakes to build up the audiences adrenaline"
-    },
-    Featured: false,
-    ImagePath: "https://upload.wikimedia.org/wikipedia/en/5/53/Captain_America_Civil_War_poster.jpg"
-}, {
-    title: 'The Emperors New Groove',
-    releaseDate: "2000",
-    Director: {
-      Name: "Mark Dindal",
-      Bio: "American director famous for popular films for kids, like Chicken Little",
-      Birth: "1960",
-      Death: "null"
-  },
-    Genre: {
-      Name: "Comedy",
-      Description: "Films that focus on making the audience laugh through jokes and their ridiculous premises"
-    },
-    Featured: false,
-    ImagePath: "https://upload.wikimedia.org/wikipedia/en/6/69/Grooveposter.jpg"
-}, {
-    title: 'Anomolisa',
-    releaseDate: "2015",
-    Director: {
-      Name: "Charlie Kaufman",
-      Bio: "American director known for his mind boggling/trippy films",
-      Birth: "1958",
-      Death: "null"
-  },
-    Genre: {
-      Name: "Romance",
-      Description: "Films that focus on the romantic relationship between individuals"
-    },
-    Featured: true,
-    ImagePath: "https://upload.wikimedia.org/wikipedia/en/0/0f/Anomalisa_poster.jpg"
-}, {
-    title: 'Spirited Away',
-    releaseDate: "2001",
-    Director: {
-      Name: "Hayao Miyazaki",
-      Bio: "Japanese animator and cofounder of Studio Ghibli",
-      Birth: "1941",
-      Death: "null"
-  },
-    Genre: {
-      Name: "Animation",
-      Description: "Films that are animated in 2d, 3d and other forms of creative style, along with various themes and settings"
-    },
-    Featured: false,
-    ImagePath: "https://upload.wikimedia.org/wikipedia/en/d/db/Spirited_Away_Japanese_poster.png"
-}, {
-    title: 'John Wick',
-    releaseDate: "2014",
-    Director: {
-      Name: "Chad Stahelski",
-      Bio: "American director and stunt man known for his action films",
-      Birth: "1968",
-      Death: "null"
-  },
-    Genre: {
-      Name: "Action",
-      Description: "Films that focus on intense fights and close stakes to build up the audiences adrenaline"
-    },
-    Featured: false,
-    ImagePath: "https://upload.wikimedia.org/wikipedia/en/4/44/John_Wick_%28franchise_logo%29.png"
-}, {
-    title: 'Mulan',
-    releaseDate: "1998",
-    Director: {
-      Name: "Tony Bancroft",
-      Bio: "American director known for his disney films and being the owner of Toonacious Family Entertainment",
-      Birth: "1961",
-      Death: "null"
-  },
-    Genre: {
-      Name: "Animation",
-      Description: "Films that are animated in 2d, 3d and other forms of creative style, along with various themes and settings"
-    },
-    Featured: true,
-    ImagePath: "https://upload.wikimedia.org/wikipedia/en/a/a3/Movie_poster_mulan.JPG"
-}]
-
-let users = [{
-  _id: 1,
-  username: "kylerules",
-  email: "kylerules@gmail.com",
-  password: "kylepassword",
-  Birthday: new Date("1999-01-20")
-}, {
-  _id: 2,
-  username: "jamesdaman",
-  email: "jamesdaman@gmail.com",
-  password: "jamespassword",
-  Birthday: new Date("2001-10-01")
-}, {
-  _id: 3,
-  username: "christinab",
-  email: "christinab@gmail.com",
-  password: "christinapassword",
-  Birthday: new Date("2000-02-19")
-}, {
-  _id: 4,
-  username: "alexmc",
-  email: "alexmc@gmail.com",
-  password: "alexpassword",
-  Birthday: new Date("1990-08-02")
-}, {
-  _id: 5,
-  username: "jlulke",
-  email: "jlulke@gmail.com",
-  password: "jakepassword",
-  Birthday: new Date("1997-12-04")
-}
-]
 
 app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.find().then((movies) => {
@@ -266,13 +81,35 @@ app.get('/directors/:Name', passport.authenticate('jwt', { session: false }), (r
 }*/
 
 app.post('/users', (req, res) => {
-  Users.findOne({Username: req.body.Username}).then((user) => {
+  // Validation logic here for request
+  //you can either use a chain of methods like .not().isEmpty()
+  //which means "opposite of isEmpty" in plain english "is not empty"
+  //or use .isLength({min: 5}) which means
+  //minimum value of 5 characters are only allowed
+
+  [
+    check('Username', 'Username is required').isLength({min: 5}),
+    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail()
+  ], (req, res) => {
+
+    // check the validation object for errors
+    let errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({errors: errors.array()})
+    }
+  }
+
+  let hashedPassword = Users.hashPassword(req.body.Password)
+  Users.findOne({Username: req.body.Username}).then((user) => { // Search to see if the user is already in the database
     if (user) {
       return res.status(400).send(req.body.Username + 'already exists')
     } else {
       Users.create({
         Username: req.body.Username,
-        Password: req.body.Password,
+        Password: hashedPassword,
         Email: req.body.Email,
         Birthday: req.body.Birthday
       }).then((user) => {res.status(201).json(user) }).catch((error) => {
@@ -314,6 +151,22 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
   Birthday: Date
 }*/
 app.put('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+  // Validation for information entered in JSON format for updating a user
+  [
+    check('Username', 'Username is required').isLength({min: 5}),
+    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail()
+  ], (req, res) => {
+
+    // check the validation object for errors
+    let errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({errors: errors.array()})
+    }
+  }
+
   Users.findOneAndUpdate({Username: req.params.Username}, { $set: 
     {
     Username: req.body.Username,
@@ -391,8 +244,9 @@ app.use(morgan('common'))
 require('log-timestamp')(function() { return 'date="' + new Date().toISOString() + '" message="%s"' });
 
 // Listens for request
-app.listen(8080, () => {
-    console.log('Your app is listening on port 8080.');
-  });
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0',() => {
+ console.log('Listening on Port ' + port);
+});
 
  // const logs = fs.writeFileSync('log.txt', '')
