@@ -262,6 +262,8 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke!');
   });
 
+require('log-timestamp')(function() { return 'date="' + new Date().toISOString() + '" message="%s"' });
+
 // Listens for request
 const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0',() => {
