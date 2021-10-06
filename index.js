@@ -4,10 +4,12 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const Models = require('./model.js')
-const cors = require('cors')
 const { check, validationResult } = require('express-validator')
+const cors = require('cors')
 
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+let allowedOrigins = [
+  'http://localhost:8080', 'http://testsite.com'
+];
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -21,11 +23,9 @@ app.use(cors({
 }))
 
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }));
-
-let auth = require('./auth')(app);
-const passport = require('passport');
-require('./passport');
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(morgan('common'))
+app.use(express.static('public'))
 
 const Movies = Models.Movie
 const Users = Models.User
@@ -35,7 +35,13 @@ const Genres = Models.Genre
 // mongoose.connect('mongodb://localhost:27017/myFlixDB', {useNewUrlParser: true, useUnifiedTopology: true})
 mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true }); // The URL is stored online on the Heroku website for security reasons
 
-app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
+let auth = require('./auth')(app);
+const passport = require('passport');
+require('./passport');
+
+app.get('/movies',
+ passport.authenticate('jwt', { session: false }),
+  (req, res) => {
   Movies.find().then((movies) => {
     res.status(201).json(movies)
   }).catch((err) => {
@@ -44,7 +50,9 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) 
   })
 })
 
-app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/movies/:title',
+ passport.authenticate('jwt',{ session: false }),
+  (req, res) => {
     Movies.findOne({'movie.title': req.params.title}).then((movies) => {
       res.json(movies)
     }).catch((err) => {
@@ -53,7 +61,9 @@ app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req
     })
   });
 
-app.get('/genres/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/genres/:Name',
+ passport.authenticate('jwt',{ session: false }),
+  (req, res) => {
     Genres.findOne({"genre.Name": req.params.Name}).then((genres) => {
       res.json(genres)
     }).catch((err) => {
@@ -62,7 +72,9 @@ app.get('/genres/:Name', passport.authenticate('jwt', { session: false }), (req,
     })
   });
 
-app.get('/directors/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/directors/:Name',
+ passport.authenticate('jwt',{ session: false }),
+  (req, res) => {
     Directors.findOne({"director.Name": req.params.Name}).then((directors) => {
       res.json(directors)
     }).catch((err) => {
@@ -81,7 +93,8 @@ app.get('/directors/:Name', passport.authenticate('jwt', { session: false }), (r
   Birthday: Date
 }*/
 
-app.post('/users', (req, res) => {
+app.post('/users',
+ (req, res) => {
   // Validation logic here for request
   //you can either use a chain of methods like .not().isEmpty()
   //which means "opposite of isEmpty" in plain english "is not empty"
@@ -122,7 +135,9 @@ app.post('/users', (req, res) => {
 })
 
 // Get all users
-app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/users',
+ passport.authenticate('jwt',{ session: false }),
+  (req, res) => {
   Users.find().then((users) => {
     res.status(201).json(users)
   }).catch((err) => {
@@ -132,7 +147,9 @@ app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) =
 })
 
 // Get a user by username
-app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/users/:Username',
+ passport.authenticate('jwt',{ session: false }),
+  (req, res) => {
   Users.findOne({Username: req.params.Username}).then((user) => {
     res.json(user)
   }).catch((err) => {
@@ -151,7 +168,9 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
   (required)
   Birthday: Date
 }*/
-app.put('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.put('/users/:Username',
+ passport.authenticate('jwt',{ session: false }),
+  (req, res) => {
   // Validation for information entered in JSON format for updating a user
   [
     check('Username', 'Username is required').isLength({min: 5}),
@@ -187,7 +206,9 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), (r
 })
 
 // Add a movie to a user's list of favorites
-app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.post('/users/:Username/movies/:MovieID',
+ passport.authenticate('jwt', { session: false }),
+  (req, res) => {
   Users.findOneAndUpdate({Username: req.params.Username}, { $push: {FavoriteMovies: req.params.MovieID}
   }, {new:true}, // So that updated document is returned
   (err, updatedUser) => {
@@ -205,7 +226,9 @@ app.get('/', (req, res) => {
 })
 
 // Delete a user by username
-app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.delete('/users/:Username',
+ passport.authenticate('jwt',{ session: false }),
+  (req, res) => {
   Users.findOneAndRemove({Username: req.params.Username}).then((user) => {
     if(!user) {
       res.status(400).send(req.params.Username + 'was not found')
@@ -219,7 +242,8 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
 })
 
 // Remove movie from user's favorites
-app.post('/users/:Username/movies/:MovieID', (req, res) => {
+app.post('/users/:Username/movies/:MovieID',
+ (req, res) => {
   Users.findOneAndUpdate({Username: req.params.Username}, { $pull: {FavoriteMoves: req.params.MovieID}
   }, {new:true}, // So that updated document is returned
   (err, updatedUser) => {
@@ -232,15 +256,11 @@ app.post('/users/:Username/movies/:MovieID', (req, res) => {
   })
 })
 
-app.use(express.static('public'))
-
 app.use((err, req, res, next) => {
     console.error(err.stack);
     console.log(err.stack)
     res.status(500).send('Something broke!');
   });
-
-app.use(morgan('common'))
 
 require('log-timestamp')(function() { return 'date="' + new Date().toISOString() + '" message="%s"' });
 
