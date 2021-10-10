@@ -35,9 +35,9 @@ const Genres = Models.Genre
 // mongoose.connect('mongodb://localhost:27017/myFlixDB', {useNewUrlParser: true, useUnifiedTopology: true})
 mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true }); // The URL is stored online on the Heroku website for security reasons
 
-let auth = require('./auth')(app)
+let auth = require('./auth.js')(app)
 const passport = require('passport')
-require('./passport')
+require('./passport.js')
 
 app.get('/movies',
  passport.authenticate('jwt', { session: false }),
