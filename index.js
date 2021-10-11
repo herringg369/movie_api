@@ -40,7 +40,7 @@ const passport = require('passport')
 require('./passport.js')
 
 app.get('/movies',
- passport.authenticate('jwt', { session: false }),
+ //passport.authenticate('jwt', { session: false }),
   (req, res) => {
   Movies.find().then((movies) => {
     res.status(201).json(movies)
@@ -51,7 +51,7 @@ app.get('/movies',
 })
 
 app.get('/movies/:title',
- passport.authenticate('jwt', { session: false }),
+ //passport.authenticate('jwt', { session: false }),
   (req, res) => {
     Movies.findOne({'movie.title': req.params.title}).then((movies) => {
       res.json(movies)
@@ -62,7 +62,7 @@ app.get('/movies/:title',
   });
 
 app.get('/genres/:Name',
- passport.authenticate('jwt', { session: false }),
+ //passport.authenticate('jwt', { session: false }),
   (req, res) => {
     Genres.findOne({"genre.Name": req.params.Name}).then((genres) => {
       res.json(genres)
@@ -73,7 +73,7 @@ app.get('/genres/:Name',
   });
 
 app.get('/directors/:Name',
- passport.authenticate('jwt', { session: false }),
+ //passport.authenticate('jwt', { session: false }),
   (req, res) => {
     Directors.findOne({"director.Name": req.params.Name}).then((directors) => {
       res.json(directors)
@@ -136,7 +136,7 @@ app.post('/users',
 
 // Get all users
 app.get('/users',
- passport.authenticate('jwt', { session: false }),
+ //passport.authenticate('jwt', { session: false }),
   (req, res) => {
   Users.find().then((users) => {
     res.status(201).json(users)
@@ -148,7 +148,7 @@ app.get('/users',
 
 // Get a user by username
 app.get('/users/:Username',
- passport.authenticate('jwt', { session: false }),
+ //passport.authenticate('jwt', { session: false }),
   (req, res) => {
   Users.findOne({Username: req.params.Username}).then((user) => {
     res.json(user)
@@ -169,7 +169,7 @@ app.get('/users/:Username',
   Birthday: Date
 }*/
 app.put('/users/:Username',
- passport.authenticate('jwt', { session: false }),
+ //passport.authenticate('jwt', { session: false }),
   (req, res) => {
   // Validation for information entered in JSON format for updating a user
   [
@@ -207,7 +207,7 @@ app.put('/users/:Username',
 
 // Add a movie to a user's list of favorites
 app.post('/users/:Username/movies/:MovieID',
- passport.authenticate('jwt', { session: false }),
+ //passport.authenticate('jwt', { session: false }),
   (req, res) => {
   Users.findOneAndUpdate({Username: req.params.Username}, { $push: {FavoriteMovies: req.params.MovieID}
   }, {new:true}, // So that updated document is returned
@@ -227,7 +227,7 @@ app.get('/', (req, res) => {
 
 // Delete a user by username
 app.delete('/users/:Username',
- passport.authenticate('jwt', { session: false }),
+ //passport.authenticate('jwt', { session: false }),
   (req, res) => {
   Users.findOneAndRemove({Username: req.params.Username}).then((user) => {
     if(!user) {
