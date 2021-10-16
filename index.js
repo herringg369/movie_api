@@ -36,7 +36,7 @@ const Directors = Models.Director
 const Genres = Models.Genre
 
 // mongoose.connect('mongodb://localhost:27017/myFlixDB', {useNewUrlParser: true, useUnifiedTopology: true})
-mongoose.connect("mongodb+srv://thisistheperfectplan:thisistheuserpassword@myflixandfirstdb.8zljr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true }); // The URL is stored online on the Heroku website for security reasons
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true }); // The URL is stored online on the Heroku website for security reasons
 
 let auth = require('./auth')(app)
 require('./passport.js')
