@@ -22,6 +22,9 @@ app.use(cors({
   }
 }))
 
+const passport = require('passport')
+app.use(passport.initialize());
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(morgan('common'))
@@ -36,7 +39,6 @@ const Genres = Models.Genre
 mongoose.connect("mongodb+srv://thisistheperfectplan:thisistheuserpassword@myflixandfirstdb.8zljr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true }); // The URL is stored online on the Heroku website for security reasons
 
 let auth = require('./auth')(app)
-const passport = require('passport')
 require('./passport.js')
 
 app.get('/movies',
